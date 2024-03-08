@@ -1,0 +1,26 @@
+rom selenium import webdriver
+import datetime
+import openpyxl
+from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+
+
+def has_header(worksheet):
+    # Iterate through the cells in the first row
+    for cell in worksheet.iter_rows():
+        if cell.value is not None:
+            return True
+    return False
+
+
+def populate_excel_file(start_date, driver):
+    core_data_div = driver.find_element(By.XPATH, ")
+    soup = BeautifulSoup(core_data_div.get_attribute("innerHTML"), "html.parser")
+    table = soup.find('table')
+    header = []
+    rows = []
+    avoid_header = False
+    workbook = None
+    file_name = "daily_prices_report.xlsx"
+    try:
